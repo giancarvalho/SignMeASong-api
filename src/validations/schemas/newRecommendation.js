@@ -5,7 +5,7 @@ const youtubeUrlPattern =
 
 const newRecommendationSchema = joi.object({
   name: joi.string().min(3).max(60).required(),
-  youtubeLink: joi.string().pattern(youtubeUrlPattern).required(),
+  youtubeLink: joi.string().pattern(RegExp(youtubeUrlPattern)).required(),
 });
 
 export default newRecommendationSchema;
