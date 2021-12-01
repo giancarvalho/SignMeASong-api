@@ -2,8 +2,9 @@ import * as recommendationValidation from '../validations/recommendation.validat
 import * as recommendationRepository from '../repositories/recommendation.repository.js';
 
 async function create(recommmendationData) {
-  const validation =
-    recommendationValidation.validateCreation(recommmendationData);
+  const validation = await recommendationValidation.validateCreation(
+    recommmendationData
+  );
 
   if (validation.isInvalid) {
     return validation;
@@ -13,7 +14,7 @@ async function create(recommmendationData) {
     recommmendationData
   );
 
-  return { id: insertRequest };
+  return insertRequest;
 }
 
 export { create };

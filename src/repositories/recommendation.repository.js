@@ -7,10 +7,23 @@ async function insert(recommendationData) {
       [recommendationData.name, recommendationData.youtubeLink]
     );
 
-    return result.rows[0].id;
+    return result.rows[0];
   } catch (error) {
-    console.log(error);
+    return { isInvalid: true, errorCode: 500 };
   }
 }
 
-export { insert };
+async function find(recommendationLink) {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM recommendations WHERE link = $1',
+      [recommendationLink]
+    );
+
+    return result.rows;
+  } catch (error) {
+    return { isInvalid: true, errorCode: 500 };
+  }
+}
+
+export { insert, find };

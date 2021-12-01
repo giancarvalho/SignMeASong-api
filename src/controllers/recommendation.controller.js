@@ -9,12 +9,11 @@ async function create(req, res) {
     );
 
     if (createRecommendationRequest.isInvalid) {
-      return res.sendStatus(createRecommendationRequest.erroCode);
+      return res.sendStatus(createRecommendationRequest.errorCode);
     }
 
     res.status(201).send(createRecommendationRequest);
   } catch (error) {
-    console.log(error);
     res.sendStatus(500);
   }
 }
