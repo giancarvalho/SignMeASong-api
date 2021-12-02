@@ -2,7 +2,6 @@ import * as recommendationValidation from '../../src/validations/recommendation.
 import createFakeRecommendation from '../factories/recommendation.factory.js';
 import * as recommendationRepository from '../../src/repositories/recommendation.repository.js';
 import newRecommendationSchema from '../../src/validations/schemas/newRecommendation.js';
-import { BadRequest } from '../../src/utils/errors.js';
 
 const sut = recommendationValidation;
 describe('POST /recommendation', () => {
@@ -29,7 +28,7 @@ describe('POST /recommendation', () => {
       .mockReturnValueOnce({ error: true });
 
     try {
-      await recommendationValidation.validateCreation(fakeRecommendation);
+      await sut.validateCreation(fakeRecommendation);
 
       throw new Error('Function did not throw error');
     } catch (error) {
@@ -49,7 +48,7 @@ describe('POST /recommendation', () => {
       .mockReturnValueOnce({ error: false });
 
     try {
-      await recommendationValidation.validateCreation(fakeRecommendation);
+      await sut.validateCreation(fakeRecommendation);
 
       throw new Error('Function did not throw error');
     } catch (error) {
