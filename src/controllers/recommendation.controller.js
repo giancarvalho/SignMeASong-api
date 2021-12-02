@@ -1,6 +1,6 @@
 import * as recommendationService from '../services/recommendation.service.js';
 
-async function create(req, res) {
+async function create(req, res, next) {
   const recommendationData = req.body;
 
   try {
@@ -14,7 +14,7 @@ async function create(req, res) {
 
     res.status(201).send(createRecommendationRequest);
   } catch (error) {
-    res.sendStatus(500);
+    next(error);
   }
 }
 
