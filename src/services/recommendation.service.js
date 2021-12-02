@@ -2,13 +2,7 @@ import * as recommendationValidation from '../validations/recommendation.validat
 import * as recommendationRepository from '../repositories/recommendation.repository.js';
 
 async function create(recommmendationData) {
-  const validation = await recommendationValidation.validateCreation(
-    recommmendationData
-  );
-
-  if (validation.isInvalid) {
-    return validation;
-  }
+  await recommendationValidation.validateCreation(recommmendationData);
 
   const insertRequest = await recommendationRepository.insert(
     recommmendationData

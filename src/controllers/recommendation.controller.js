@@ -8,10 +8,6 @@ async function create(req, res, next) {
       recommendationData
     );
 
-    if (createRecommendationRequest.isInvalid) {
-      return res.sendStatus(createRecommendationRequest.errorCode);
-    }
-
     res.status(201).send(createRecommendationRequest);
   } catch (error) {
     next(error);
