@@ -16,6 +16,8 @@ async function validateCreation(data) {
   if (isExistingRecommendation.length > 0) {
     throw new Conflict('Recommendation is already registered.');
   }
+
+  return true;
 }
 
 export { validateCreation };
