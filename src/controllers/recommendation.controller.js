@@ -26,4 +26,16 @@ async function upvote(req, res, next) {
   }
 }
 
-export { create, upvote };
+async function downvote(req, res, next) {
+  const { id } = req.params;
+
+  try {
+    await recommendationService.downvote(id);
+
+    res.sendStatus(200);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export { create, upvote, downvote };

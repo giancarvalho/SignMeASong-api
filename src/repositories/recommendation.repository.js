@@ -33,4 +33,33 @@ async function insertUpvote(recommendationId) {
   ]);
 }
 
-export { insert, findByLink, insertUpvote, findById };
+async function getScore(recommendationId) {
+  const result = await pool.query(
+    'SELECT recommendations.*, COUNT(DISTINCT upvotes.id) AS "upvoteCount", COUNT(DISTINCT downvotes.id) AS "downvoteCount" FROM recommendations LEFT JOIN upvotes ON recommendations.id=upvotes.recommendation_id LEFT JOIN downvotes ON recommendations.id=downvotes.recommendation_id WHERE recommendations.id = $1 GROUP BY recommendations.id;',
+    [recommendationId]
+  );
+
+  return result.rows[0];
+}
+
+async function insertDownvote(recommendationId) {
+  await pool.query('INSERT INTO downvotes (recommendation_id) VALUES ($1);', [
+    recommendationId,
+  ]);
+}
+
+async function deleteRecommendation(recommendationId) {
+  await pool.query('DELETE FROM recommendations WHERE id = $1;', [
+    recommendationId,
+  ]);
+}
+
+export {
+  insert,
+  findByLink,
+  insertUpvote,
+  findById,
+  insertDownvote,
+  getScore,
+  deleteRecommendation,
+};

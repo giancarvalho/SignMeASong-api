@@ -30,9 +30,9 @@ CREATE TABLE "downvotes" (
 
 
 
-ALTER TABLE "upvotes" ADD CONSTRAINT "upvotes_fk0" FOREIGN KEY ("recommendation_id") REFERENCES "recommendations"("id");
+ALTER TABLE "upvotes" ADD CONSTRAINT "upvotes_fk0" FOREIGN KEY ("recommendation_id") REFERENCES "recommendations"("id") on DELETE CASCADE;
 
-ALTER TABLE "downvotes" ADD CONSTRAINT "downvotes_fk0" FOREIGN KEY ("recommendation_id") REFERENCES "recommendations"("id");
+ALTER TABLE "downvotes" ADD CONSTRAINT "downvotes_fk0" FOREIGN KEY ("recommendation_id") REFERENCES "recommendations"("id") on DELETE CASCADE;
 
 
 

@@ -24,4 +24,21 @@ async function upvote(recommendationId) {
   return true;
 }
 
-export { create, upvote };
+async function downvote(recommendationId) {
+  const recommendationData = await recommendationRepository.getScore(
+    recommendationId
+  );
+
+  if (!recommendationData) throw new NotFound('Recommendation not found');
+
+  const recommendationScore =
+    recommendationData.upvoteCount - recommendationData.downvoteCount - 1;
+
+  if (recommendationScore <= -5) {
+    return recommendationRepository.deleteRecommendation(recommendationId);
+  }
+
+  return recommendationRepository.insertDownvote(recommendationId);
+}
+
+export { create, upvote, downvote };
