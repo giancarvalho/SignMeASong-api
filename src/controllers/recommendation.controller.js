@@ -14,4 +14,16 @@ async function create(req, res, next) {
   }
 }
 
-export { create };
+async function upvote(req, res, next) {
+  const { id } = req.params;
+
+  try {
+    await recommendationService.upvote(id);
+
+    res.sendStatus(200);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export { create, upvote };
