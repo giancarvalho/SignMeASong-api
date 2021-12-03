@@ -4,5 +4,6 @@ import * as recommendationController from '../controllers/recommendation.control
 const route = express.Router();
 
 route.post('', recommendationController.create);
+route.post('/:id/upvote', recommendationController.upvote);
 
 export default route;

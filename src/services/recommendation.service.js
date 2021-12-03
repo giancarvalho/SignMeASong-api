@@ -1,5 +1,6 @@
 import * as recommendationValidation from '../validations/recommendation.validation.js';
 import * as recommendationRepository from '../repositories/recommendation.repository.js';
+import { NotFound } from '../utils/errors.js';
 
 async function create(recommmendationData) {
   await recommendationValidation.validateCreation(recommmendationData);
@@ -11,4 +12,16 @@ async function create(recommmendationData) {
   return insertRequest;
 }
 
-export { create };
+async function upvote(recommendationId) {
+  const isRecommendation = await recommendationRepository.findbyId(
+    recommendationId
+  );
+
+  if (!isRecommendation) throw new NotFound('Recommendation not found');
+
+  await recommendationRepository.insertUpvote(recommendationId);
+
+  return true;
+}
+
+export { create, upvote };

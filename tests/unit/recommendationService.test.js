@@ -7,7 +7,7 @@ const sut = recommendationValidation;
 describe('POST /recommendation', () => {
   it('should return true if body is valid', async () => {
     jest
-      .spyOn(recommendationRepository, 'find')
+      .spyOn(recommendationRepository, 'findbyLink')
       .mockImplementationOnce(() => []);
 
     const fakeRecommendation = createFakeRecommendation();
@@ -34,7 +34,7 @@ describe('POST /recommendation', () => {
 
   it('should return Recommendation is already registered', async () => {
     jest
-      .spyOn(recommendationRepository, 'find')
+      .spyOn(recommendationRepository, 'findbyLink')
       .mockReturnValueOnce([{ id: 2 }]);
 
     const fakeRecommendation = createFakeRecommendation();
