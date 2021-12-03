@@ -32,7 +32,7 @@ describe('POST /recommendation', () => {
     }).rejects.toThrow('Invalid name or link');
   });
 
-  it('should return User is already registered', async () => {
+  it('should return Recommendation is already registered', async () => {
     jest
       .spyOn(recommendationRepository, 'find')
       .mockReturnValueOnce([{ id: 2 }]);
