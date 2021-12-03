@@ -9,7 +9,7 @@ async function validateCreation(data) {
     throw new BadRequest('Invalid name or link');
   }
 
-  const isExistingRecommendation = await recommendationRepository.findbyLink(
+  const isExistingRecommendation = await recommendationRepository.findByLink(
     data.youtubeLink
   );
 

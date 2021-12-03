@@ -9,7 +9,7 @@ async function insert(recommendationData) {
   return result.rows[0];
 }
 
-async function findbyLink(recommendationLink) {
+async function findByLink(recommendationLink) {
   const result = await pool.query(
     'SELECT * FROM recommendations WHERE link = $1',
     [recommendationLink]
@@ -33,4 +33,4 @@ async function insertUpvote(recommendationId) {
   ]);
 }
 
-export { insert, findbyLink, insertUpvote, findById };
+export { insert, findByLink, insertUpvote, findById };
