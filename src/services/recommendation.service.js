@@ -13,7 +13,7 @@ async function create(recommmendationData) {
 }
 
 async function upvote(recommendationId) {
-  const isRecommendation = await recommendationRepository.findbyId(
+  const isRecommendation = await recommendationRepository.findById(
     recommendationId
   );
 

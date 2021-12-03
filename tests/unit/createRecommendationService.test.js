@@ -21,4 +21,30 @@ describe('unit test for recommendationService', () => {
 
     expect(result).toMatchObject(returnedValue);
   });
+
+  it('should return true if upvote is inserted', async () => {
+    jest
+      .spyOn(recommendationRepository, 'insertUpvote')
+      .mockReturnValueOnce(true);
+
+    jest
+      .spyOn(recommendationRepository, 'findById')
+      .mockReturnValueOnce({ id: 1 });
+
+    const result = await sut.upvote(1);
+
+    expect(result).toBeTruthy();
+  });
+
+  it('should throw Recommendation not found if recommendation to be upvoted is not found', async () => {
+    jest
+      .spyOn(recommendationRepository, 'insertUpvote')
+      .mockReturnValueOnce(true);
+
+    jest.spyOn(recommendationRepository, 'findById').mockReturnValueOnce();
+
+    expect(async () => {
+      await sut.upvote(1);
+    }).rejects.toThrow('Recommendation not found');
+  });
 });

@@ -18,7 +18,7 @@ async function findbyLink(recommendationLink) {
   return result.rows;
 }
 
-async function findbyId(recommendationId) {
+async function findById(recommendationId) {
   const result = await pool.query(
     'SELECT * FROM recommendations WHERE id = $1',
     [recommendationId]
@@ -33,4 +33,4 @@ async function insertUpvote(recommendationId) {
   ]);
 }
 
-export { insert, findbyLink, insertUpvote, findbyId };
+export { insert, findbyLink, insertUpvote, findById };
