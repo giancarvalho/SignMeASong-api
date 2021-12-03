@@ -27,13 +27,9 @@ describe('POST /recommendation', () => {
       .spyOn(newRecommendationSchema, 'validate')
       .mockReturnValueOnce({ error: true });
 
-    try {
+    expect(async () => {
       await sut.validateCreation(fakeRecommendation);
-
-      throw new Error('Function did not throw error');
-    } catch (error) {
-      expect(error.message).toBe('Invalid name or link');
-    }
+    }).rejects.toThrow('Invalid name or link');
   });
 
   it('should return User is already registered', async () => {
@@ -47,12 +43,8 @@ describe('POST /recommendation', () => {
       .spyOn(newRecommendationSchema, 'validate')
       .mockReturnValueOnce({ error: false });
 
-    try {
+    expect(async () => {
       await sut.validateCreation(fakeRecommendation);
-
-      throw new Error('Function did not throw error');
-    } catch (error) {
-      expect(error.message).toBe('Recommendation is already registered.');
-    }
+    }).rejects.toThrow('Recommendation is already registered.');
   });
 });
