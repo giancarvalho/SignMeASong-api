@@ -4,7 +4,7 @@ import * as recommendationValidation from '../../src/validations/recommendation.
 import createFakeRecommendation from '../factories/recommendation.factory.js';
 
 const sut = recommendationService;
-describe('unit test for recommendationService', () => {
+describe('unit test for create recommendationService', () => {
   it('should return an object with an id', async () => {
     const recommendation = createFakeRecommendation();
 
@@ -21,7 +21,9 @@ describe('unit test for recommendationService', () => {
 
     expect(result).toMatchObject(returnedValue);
   });
+});
 
+describe('Unit tests for upvote recommendation service', () => {
   it('should return true if upvote is inserted', async () => {
     jest
       .spyOn(recommendationRepository, 'insertUpvote')
@@ -46,5 +48,45 @@ describe('unit test for recommendationService', () => {
     expect(async () => {
       await sut.upvote(1);
     }).rejects.toThrow('Recommendation not found');
+  });
+});
+
+describe('Unit tests for downvote recommendation service', () => {
+  jest
+    .spyOn(recommendationRepository, 'deleteRecommendation')
+    .mockReturnValue('deleted');
+
+  jest
+    .spyOn(recommendationRepository, 'insertDownvote')
+    .mockReturnValue('inserted');
+
+  it('should return true if downvote is inserted', async () => {
+    const returnedData = { id: 1, upvoteCount: 3, downvoteCount: 6 };
+    jest
+      .spyOn(recommendationRepository, 'getScore')
+      .mockReturnValueOnce(returnedData);
+
+    const result = await sut.downvote(1);
+
+    expect(result).toBe('inserted');
+  });
+
+  it('should throw Recommendation not found if recommendation to be downvoted is not found', async () => {
+    jest.spyOn(recommendationRepository, 'getScore').mockReturnValueOnce();
+
+    expect(async () => {
+      await sut.downvote(1);
+    }).rejects.toThrow('Recommendation not found');
+  });
+
+  it('should delete the recomendation if score is equal or less than -5', async () => {
+    const returnedData = { id: 1, upvoteCount: 0, downvoteCount: 4 };
+    jest
+      .spyOn(recommendationRepository, 'getScore')
+      .mockReturnValueOnce(returnedData);
+
+    const result = await sut.downvote(1);
+
+    expect(result).toBe('deleted');
   });
 });

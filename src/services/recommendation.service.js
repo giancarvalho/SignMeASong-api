@@ -19,9 +19,7 @@ async function upvote(recommendationId) {
 
   if (!isRecommendation) throw new NotFound('Recommendation not found');
 
-  await recommendationRepository.insertUpvote(recommendationId);
-
-  return true;
+  return recommendationRepository.insertUpvote(recommendationId);
 }
 
 async function downvote(recommendationId) {
