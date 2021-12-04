@@ -1,21 +1,16 @@
-# template-nodejs
+# Sing me a Song
 
-## Motivação
+SingMeASong is an API that lets you register, upvote, downvote and get song recommendations.
 
-Esse template diminui a burocracia de criar um server Node.js/Express, possuindo a maior parte das configurações inicias já feitas. O template segue os padrões de projetos da Driven Education.
+## Technologies
 
-## Dependencias
-
-### Produção
+### Production
 - express
 - pg 
 - cors
 - dotenv
 - jest 
 - babel-jest
-- supertest
-- bcrypt
-- uuid
 - joi
 
 ### Dev
@@ -24,26 +19,71 @@ Esse template diminui a burocracia de criar um server Node.js/Express, possuindo
 - nodemon
 - faker
 
-## Como usar?
 
-1- Crie um repositório utilizando esse template ao clicar no botão "use this template" acima. 
+## Requirements
 
-2 -  Dê um ```git clone``` em seu repositorio
+- npm
+- git
+- postgres
 
-3 - Na pasta do projeto, dê um ```npm install```
+## Running it locally
 
-4 - Adicione seus arquivos .env na pasta raiz
+1- Clone this repository using ```git clone https://github.com/giancarvalho/SingMeASong-api.git```
 
-5 - De um ```npx husky install```
+2 - Run ```npm install``` 
 
-6 - Dẽ um ```npm start:dev```
+3 - Use the dump.sql to create your postgres database.
 
-7- Opcionalmente, adicione os detalhes do seu projeto no package.json (nome, url, etc)
+4 - Add your .env files (follow the ```.env.example``` file)
 
-Há tres scripts iniciais:
+5 - Run ```npm run dev```
+
+There are three built-in scripts:
 
     "start": "NODE_ENV=prod node src/server.js",
-    "start:dev": "NODE_ENV=dev nodemon src/server.js",
+    "dev": "NODE_ENV=dev nodemon src/server.js",
     "test": "NODE_ENV=test npx jest"
 
-### Fique a vontade para melhorar esse template ou me dar dicas de como fazer isso.
+## Routes guide
+
+> POST /recommendations - Lets you register new recommendations. It requires an object with the following properties:
+
+```
+{
+	"name": "Song Name",
+	"youtubeLink": "https://www.youtube.com/watch?v=chwyjJbcs1Y",
+}
+```
+
+
+> POST /recommendations/:id/upvote - Lets you upvote a recommendation. It requires a recommendation`s id as a param, like in the example below:
+
+```
+	/recommendations/3/upvote
+```
+
+
+> POST /recommendations/:id/downvote - Lets you downvote a recommendation. It requires a recommendation`s id as a param, like in the example below:
+
+```
+	/recommendations/3/downvote
+```
+
+
+> GET /recommendations/random - It sends a single random recommendation in the following format:
+
+```
+{
+	"id": 1,
+	"name": "Song name",
+	"youtubeLink": "https://www.youtube.com/watch?v=ePjtnSPFWK8&ab_channel=CHXVEVO",
+	"score": 245
+},
+```
+
+
+> GET /recommendations/top/:amount - It sends an array containing N of the top recommendations, being N the specified amount in the params. This route requires the amount params to be sent like in the example below:
+
+```
+	/recommendations/top/10
+```
