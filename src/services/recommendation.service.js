@@ -31,10 +31,7 @@ async function downvote(recommendationId) {
 
   if (!recommendationData) throw new NotFound('Recommendation not found');
 
-  const recommendationScore =
-    recommendationData.upvoteCount - recommendationData.downvoteCount - 1;
-
-  if (recommendationScore < -5) {
+  if (recommendationData.score - 1 < -5) {
     return recommendationRepository.deleteRecommendation(recommendationId);
   }
 
@@ -52,17 +49,11 @@ async function getRandom() {
     throw new NotFound('0 recommendations registered');
 
   randomRecommendations.forEach((recommendation) => {
-    recommendation.score =
-      recommendation.upvoteCount - recommendation.downvoteCount;
-
     if (recommendation.score > 10) {
       aboveTenPoints.push(recommendation);
     } else {
       belowTenPoints.push(recommendation);
     }
-
-    delete recommendation.upvoteCount;
-    delete recommendation.downvoteCount;
   });
 
   if (aboveTenPoints.length === 0 || belowTenPoints.length === 0) {

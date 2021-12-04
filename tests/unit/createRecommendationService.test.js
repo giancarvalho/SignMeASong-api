@@ -87,7 +87,7 @@ describe('Unit tests for downvote recommendation service', () => {
   });
 
   it('should delete the recomendation if score is equal or less than -5', async () => {
-    const returnedData = { id: 1, upvoteCount: 0, downvoteCount: 5 };
+    const returnedData = { id: 1, score: -5 };
     jest
       .spyOn(recommendationRepository, 'getScore')
       .mockReturnValueOnce(returnedData);
@@ -122,7 +122,6 @@ describe('Unit tests for getRandom recommendation service', () => {
     mockedChooseRandomItem.mockReturnValueOnce(returnedData[1]);
 
     const result = await sut.getRandom();
-    console.log(result);
 
     expect(result.youtubeLink).toBe(returnedData[1].youtubeLink);
   });

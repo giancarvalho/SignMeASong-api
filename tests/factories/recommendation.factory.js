@@ -18,8 +18,7 @@ function createRecommendationsBelowTenPoints() {
       id: i,
       name: 'below ten points',
       youtubeLink: recommendation.youtubeLink,
-      upvoteCount: faker.datatype.number(10),
-      downvoteCount: faker.datatype.number(5),
+      score: faker.datatype.number({ min: -5, max: 10 }),
     });
   }
 
@@ -34,8 +33,7 @@ function createRecommendationsAboveTenPoints() {
     recommendationArray.push({
       name: 'above ten points',
       link: recommendation.youtubeLink,
-      upvoteCount: faker.datatype.number({ min: 15, max: 50 }),
-      downvoteCount: 0,
+      score: faker.datatype.number({ min: 15, max: 500 }),
       id: i,
     });
   }
