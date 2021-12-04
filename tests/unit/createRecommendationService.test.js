@@ -1,8 +1,14 @@
 import * as recommendationService from '../../src/services/recommendation.service.js';
 import * as recommendationRepository from '../../src/repositories/recommendation.repository.js';
 import * as recommendationValidation from '../../src/validations/recommendation.validation.js';
-import createFakeRecommendation from '../factories/recommendation.factory.js';
+import {
+  createFakeRecommendation,
+  createRecommendationsAboveTenPoints,
+  createRecommendationsBelowTenPoints,
+} from '../factories/recommendation.factory.js';
+import chooseRandomItem from '../../src/utils/getRandomItem.js';
 import { NotFound } from '../../src/utils/errors.js';
+import faker from 'faker';
 
 const sut = recommendationService;
 describe('unit test for create recommendationService', () => {
@@ -81,7 +87,7 @@ describe('Unit tests for downvote recommendation service', () => {
   });
 
   it('should delete the recomendation if score is equal or less than -5', async () => {
-    const returnedData = { id: 1, upvoteCount: 0, downvoteCount: 4 };
+    const returnedData = { id: 1, upvoteCount: 0, downvoteCount: 5 };
     jest
       .spyOn(recommendationRepository, 'getScore')
       .mockReturnValueOnce(returnedData);
@@ -89,5 +95,71 @@ describe('Unit tests for downvote recommendation service', () => {
     const result = await sut.downvote(1);
 
     expect(result).toBe('deleted');
+  });
+});
+
+describe('Unit tests for getRandom recommendation service', () => {
+  const mockedChooseRandomItem = jest.fn(chooseRandomItem);
+
+  it('should throw NotFound if there isnt any recommendation registered', async () => {
+    const returnedData = [];
+    jest
+      .spyOn(recommendationRepository, 'getRandom')
+      .mockReturnValueOnce(returnedData);
+
+    const promise = sut.getRandom();
+
+    await expect(promise).rejects.toThrowError(NotFound);
+  });
+
+  it('should get a random item if there isnt any recommendations above 10', async () => {
+    const returnedData = createRecommendationsBelowTenPoints();
+
+    jest
+      .spyOn(recommendationRepository, 'getRandom')
+      .mockReturnValueOnce(returnedData);
+
+    mockedChooseRandomItem.mockReturnValueOnce(returnedData[1]);
+
+    const result = await sut.getRandom();
+    console.log(result);
+
+    expect(result.youtubeLink).toBe(returnedData[1].youtubeLink);
+  });
+
+  it('should get an item from recommendationAboveTenPoints array', async () => {
+    const recommendationsAboveTenPoints = createRecommendationsAboveTenPoints();
+    const recommendationsBelowTenPoints = createRecommendationsBelowTenPoints();
+    const returnedData = recommendationsAboveTenPoints.concat(
+      recommendationsBelowTenPoints
+    );
+
+    jest
+      .spyOn(recommendationRepository, 'getRandom')
+      .mockReturnValueOnce(returnedData);
+
+    jest.spyOn(global.Math, 'random').mockReturnValueOnce(0.301);
+
+    const result = await sut.getRandom();
+
+    expect(result.name).toBe('above ten points');
+  });
+
+  it('should get an item from recommendationBelowTenPoints array', async () => {
+    const recommendationsAboveTenPoints = createRecommendationsAboveTenPoints();
+    const recommendationsBelowTenPoints = createRecommendationsBelowTenPoints();
+    const returnedData = recommendationsAboveTenPoints.concat(
+      recommendationsBelowTenPoints
+    );
+
+    jest
+      .spyOn(recommendationRepository, 'getRandom')
+      .mockReturnValueOnce(returnedData);
+
+    jest.spyOn(global.Math, 'random').mockReturnValueOnce(0.299);
+
+    const result = await sut.getRandom();
+
+    expect(result.name).toBe('below ten points');
   });
 });

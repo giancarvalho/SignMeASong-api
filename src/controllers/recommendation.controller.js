@@ -44,7 +44,6 @@ async function getRandom(req, res, next) {
 
     res.send(getRandomRequest);
   } catch (error) {
-    console.log(error);
     next(error);
   }
 }

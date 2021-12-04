@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import * as recommendationValidation from '../validations/recommendation.validation.js';
 import * as recommendationRepository from '../repositories/recommendation.repository.js';
 import { NotFound } from '../utils/errors.js';
@@ -33,7 +34,7 @@ async function downvote(recommendationId) {
   const recommendationScore =
     recommendationData.upvoteCount - recommendationData.downvoteCount - 1;
 
-  if (recommendationScore <= -5) {
+  if (recommendationScore < -5) {
     return recommendationRepository.deleteRecommendation(recommendationId);
   }
 
@@ -51,11 +52,17 @@ async function getRandom() {
     throw new NotFound('0 recommendations registered');
 
   randomRecommendations.forEach((recommendation) => {
-    if (recommendation.upvoteCount + recommendation.downvoteCount > 10) {
+    recommendation.score =
+      recommendation.upvoteCount - recommendation.downvoteCount;
+
+    if (recommendation.score > 10) {
       aboveTenPoints.push(recommendation);
     } else {
       belowTenPoints.push(recommendation);
     }
+
+    delete recommendation.upvoteCount;
+    delete recommendation.downvoteCount;
   });
 
   if (aboveTenPoints.length === 0 || belowTenPoints.length === 0) {
@@ -67,11 +74,7 @@ async function getRandom() {
     randomRecommendation = chooseRandomItem(chosenRecommendationArray);
   }
 
-  return {
-    id: randomRecommendation.id,
-    name: randomRecommendation.name,
-    link: randomRecommendation.link,
-  };
+  return randomRecommendation;
 }
 
 export { create, upvote, downvote, getRandom };

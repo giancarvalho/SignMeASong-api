@@ -1,5 +1,5 @@
 import * as recommendationValidation from '../../src/validations/recommendation.validation.js';
-import createFakeRecommendation from '../factories/recommendation.factory.js';
+import { createFakeRecommendation } from '../factories/recommendation.factory.js';
 import * as recommendationRepository from '../../src/repositories/recommendation.repository.js';
 import newRecommendationSchema from '../../src/validations/schemas/newRecommendation.js';
 import { BadRequest, Conflict } from '../../src/utils/errors.js';
