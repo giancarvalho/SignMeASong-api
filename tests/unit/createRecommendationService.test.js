@@ -2,6 +2,7 @@ import * as recommendationService from '../../src/services/recommendation.servic
 import * as recommendationRepository from '../../src/repositories/recommendation.repository.js';
 import * as recommendationValidation from '../../src/validations/recommendation.validation.js';
 import createFakeRecommendation from '../factories/recommendation.factory.js';
+import { NotFound } from '../../src/utils/errors.js';
 
 const sut = recommendationService;
 describe('unit test for create recommendationService', () => {
@@ -45,9 +46,9 @@ describe('Unit tests for upvote recommendation service', () => {
 
     jest.spyOn(recommendationRepository, 'findById').mockReturnValueOnce();
 
-    expect(async () => {
-      await sut.upvote(1);
-    }).rejects.toThrow('Recommendation not found');
+    const promise = sut.upvote(1);
+
+    await expect(promise).rejects.toThrowError(NotFound);
   });
 });
 
@@ -74,9 +75,9 @@ describe('Unit tests for downvote recommendation service', () => {
   it('should throw Recommendation not found if recommendation to be downvoted is not found', async () => {
     jest.spyOn(recommendationRepository, 'getScore').mockReturnValueOnce();
 
-    expect(async () => {
-      await sut.downvote(1);
-    }).rejects.toThrow('Recommendation not found');
+    const promise = sut.downvote(1);
+
+    await expect(promise).rejects.toThrowError(NotFound);
   });
 
   it('should delete the recomendation if score is equal or less than -5', async () => {
