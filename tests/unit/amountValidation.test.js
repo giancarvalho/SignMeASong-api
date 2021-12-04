@@ -8,8 +8,8 @@ describe('unit test for amountValidation', () => {
     expect(sut.validate).toThrowError(BadRequest);
   });
 
-  it('should throw a BadRequest if amount is not sent', () => {
-    const amount = faker.datatype.array();
+  it('should throw a BadRequest if amount is invalid', () => {
+    const amount = faker.datatype.float();
 
     expect(() => {
       sut.validate(amount);
