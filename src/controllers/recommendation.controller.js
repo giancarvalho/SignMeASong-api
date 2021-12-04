@@ -38,4 +38,14 @@ async function downvote(req, res, next) {
   }
 }
 
-export { create, upvote, downvote };
+async function getRandom(req, res, next) {
+  try {
+    const getRandomRequest = await recommendationService.getRandom();
+
+    res.send(getRandomRequest);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export { create, upvote, downvote, getRandom };

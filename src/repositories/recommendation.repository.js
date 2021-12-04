@@ -35,7 +35,7 @@ async function insertUpvote(recommendationId) {
 
 async function getScore(recommendationId) {
   const result = await pool.query(
-    'SELECT recommendations.*, COUNT(DISTINCT upvotes.id) AS "upvoteCount", COUNT(DISTINCT downvotes.id) AS "downvoteCount" FROM recommendations LEFT JOIN upvotes ON recommendations.id=upvotes.recommendation_id LEFT JOIN downvotes ON recommendations.id=downvotes.recommendation_id WHERE recommendations.id = $1 GROUP BY recommendations.id;',
+    'SELECT recommendations.id, recommendations.name, recommendations.link AS "youtubeLink", COUNT(DISTINCT upvotes.id) AS "upvoteCount", COUNT(DISTINCT downvotes.id) AS "downvoteCount" FROM recommendations LEFT JOIN upvotes ON recommendations.id=upvotes.recommendation_id LEFT JOIN downvotes ON recommendations.id=downvotes.recommendation_id WHERE recommendations.id = $1 GROUP BY recommendations.id;',
     [recommendationId]
   );
 
@@ -54,6 +54,14 @@ async function deleteRecommendation(recommendationId) {
   ]);
 }
 
+async function getRandom() {
+  const result = await pool.query(
+    'SELECT recommendations.id, recommendations.name, recommendations.link AS "youtubeLink", COUNT(DISTINCT upvotes.id) AS "upvoteCount", COUNT(DISTINCT downvotes.id) AS "downvoteCount" FROM recommendations LEFT JOIN upvotes ON recommendations.id=upvotes.recommendation_id LEFT JOIN downvotes ON recommendations.id=downvotes.recommendation_id  GROUP BY recommendations.id ORDER BY RANDOM() LIMIT 100;'
+  );
+
+  return result.rows;
+}
+
 export {
   insert,
   findByLink,
@@ -62,4 +70,5 @@ export {
   insertDownvote,
   getScore,
   deleteRecommendation,
+  getRandom,
 };
