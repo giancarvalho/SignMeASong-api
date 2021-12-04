@@ -6,5 +6,6 @@ const route = express.Router();
 route.post('', recommendationController.create);
 route.post('/:id/upvote', recommendationController.upvote);
 route.post('/:id/downvote', recommendationController.downvote);
+route.post('/random', recommendationController.getRandom);
 
 export default route;
