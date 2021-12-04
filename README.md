@@ -34,7 +34,7 @@ SingMeASong is an API that lets you register, upvote, downvote and get song reco
 
 3 - Use the dump.sql to create your postgres database.
 
-4 - Add your .env files (follow the ```.env.example``` file)
+4 - Add your .env files (follow the [env.example](https://github.com/giancarvalho/SingMeASong-api/blob/d55045a995fb8886c6546082c8914cd3b014bbb1/.env.example) file)
 
 5 - Run ```npm run dev```
 
