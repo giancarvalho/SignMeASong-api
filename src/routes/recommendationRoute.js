@@ -7,5 +7,6 @@ route.post('', recommendationController.create);
 route.post('/:id/upvote', recommendationController.upvote);
 route.post('/:id/downvote', recommendationController.downvote);
 route.get('/random', recommendationController.getRandom);
+route.get('/top/:amount', recommendationController.getTopSongs);
 
 export default route;

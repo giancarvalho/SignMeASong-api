@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import * as recommendationValidation from '../validations/recommendation.validation.js';
 import * as recommendationRepository from '../repositories/recommendation.repository.js';
+import * as amountValidation from '../validations/amount.validation.js';
 import { NotFound } from '../utils/errors.js';
 import chooseRandomItem from '../utils/getRandomItem.js';
 
@@ -68,4 +69,10 @@ async function getRandom() {
   return randomRecommendation;
 }
 
-export { create, upvote, downvote, getRandom };
+async function getTopSongs(amount) {
+  amountValidation.validate(amount);
+
+  return recommendationRepository.getTopSongs(amount);
+}
+
+export { create, upvote, downvote, getRandom, getTopSongs };

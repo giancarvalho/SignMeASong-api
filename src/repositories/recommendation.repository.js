@@ -62,9 +62,7 @@ async function getRandom() {
   return result.rows;
 }
 
-async function getTopSongs(givenLimit) {
-  const limit = givenLimit || 100;
-
+async function getTopSongs(limit) {
   const result = await pool.query(
     'SELECT recommendations.*, (COUNT(DISTINCT upvotes.id) - COUNT(DISTINCT downvotes.id)) AS score  FROM recommendations LEFT JOIN upvotes ON recommendations.id=upvotes.recommendation_id LEFT JOIN downvotes ON recommendations.id=downvotes.recommendation_id  GROUP BY recommendations.id ORDER BY score DESC LIMIT $1;',
     [limit]
