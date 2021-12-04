@@ -2,6 +2,7 @@ import * as recommendationValidation from '../../src/validations/recommendation.
 import createFakeRecommendation from '../factories/recommendation.factory.js';
 import * as recommendationRepository from '../../src/repositories/recommendation.repository.js';
 import newRecommendationSchema from '../../src/validations/schemas/newRecommendation.js';
+import { BadRequest, Conflict } from '../../src/utils/errors.js';
 
 const sut = recommendationValidation;
 describe('POST /recommendation', () => {
@@ -27,9 +28,9 @@ describe('POST /recommendation', () => {
       .spyOn(newRecommendationSchema, 'validate')
       .mockReturnValueOnce({ error: true });
 
-    expect(async () => {
-      await sut.validateCreation(fakeRecommendation);
-    }).rejects.toThrow('Invalid name or link');
+    const promise = sut.validateCreation(fakeRecommendation);
+
+    await expect(promise).rejects.toThrowError(BadRequest);
   });
 
   it('should return Recommendation is already registered', async () => {
@@ -43,8 +44,8 @@ describe('POST /recommendation', () => {
       .spyOn(newRecommendationSchema, 'validate')
       .mockReturnValueOnce({ error: false });
 
-    expect(async () => {
-      await sut.validateCreation(fakeRecommendation);
-    }).rejects.toThrow('Recommendation is already registered.');
+    const promise = sut.validateCreation(fakeRecommendation);
+
+    await expect(promise).rejects.toThrowError(Conflict);
   });
 });

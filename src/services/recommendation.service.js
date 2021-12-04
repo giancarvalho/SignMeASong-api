@@ -19,9 +19,24 @@ async function upvote(recommendationId) {
 
   if (!isRecommendation) throw new NotFound('Recommendation not found');
 
-  await recommendationRepository.insertUpvote(recommendationId);
-
-  return true;
+  return recommendationRepository.insertUpvote(recommendationId);
 }
 
-export { create, upvote };
+async function downvote(recommendationId) {
+  const recommendationData = await recommendationRepository.getScore(
+    recommendationId
+  );
+
+  if (!recommendationData) throw new NotFound('Recommendation not found');
+
+  const recommendationScore =
+    recommendationData.upvoteCount - recommendationData.downvoteCount - 1;
+
+  if (recommendationScore <= -5) {
+    return recommendationRepository.deleteRecommendation(recommendationId);
+  }
+
+  return recommendationRepository.insertDownvote(recommendationId);
+}
+
+export { create, upvote, downvote };
