@@ -12,14 +12,11 @@ function createFakeRecommendation() {
 function createRecommendationsBelowTenPoints() {
   const recommendationArray = [];
   for (let i = 0; i < 10; i += 1) {
-    const recommendation = createFakeRecommendation();
-
     recommendationArray.push({
       id: i,
       name: 'below ten points',
-      youtubeLink: recommendation.youtubeLink,
-      upvoteCount: faker.datatype.number(10),
-      downvoteCount: faker.datatype.number(5),
+      youtubeLink: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      score: faker.datatype.number({ min: -5, max: 10 }),
     });
   }
 
@@ -29,14 +26,11 @@ function createRecommendationsBelowTenPoints() {
 function createRecommendationsAboveTenPoints() {
   const recommendationArray = [];
   for (let i = 0; i < 10; i += 1) {
-    const recommendation = createFakeRecommendation();
-
     recommendationArray.push({
-      name: 'above ten points',
-      link: recommendation.youtubeLink,
-      upvoteCount: faker.datatype.number({ min: 15, max: 50 }),
-      downvoteCount: 0,
       id: i,
+      name: 'above ten points',
+      youtubeLink: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      score: faker.datatype.number({ min: 15, max: 500 }),
     });
   }
 

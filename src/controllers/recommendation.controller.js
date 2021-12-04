@@ -48,4 +48,17 @@ async function getRandom(req, res, next) {
   }
 }
 
-export { create, upvote, downvote, getRandom };
+async function getTopSongs(req, res, next) {
+  const { amount } = req.params;
+  try {
+    if (!amount) res.sendStatus(400);
+
+    const getTopSongsRequest = await recommendationService.getTopSongs(amount);
+
+    res.send(getTopSongsRequest);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export { create, upvote, downvote, getRandom, getTopSongs };
