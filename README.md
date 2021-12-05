@@ -26,7 +26,11 @@ SingMeASong is an API that lets you register, upvote, downvote and get song reco
 - git
 - postgres
 
-## Running it locally
+## How to use
+
+The easiest way to use the API is to send requests to the following URL: https://singmeasong-api.herokuapp.com
+
+### Running it locally
 
 1- Clone this repository using ```git clone https://github.com/giancarvalho/SingMeASong-api.git```
 
@@ -50,33 +54,33 @@ There are three built-in scripts:
 
 ```
 {
-	"name": "Song Name",
-	"youtubeLink": "https://www.youtube.com/watch?v=chwyjJbcs1Y",
+	"name": "The Moon Song",
+	"youtubeLink": "https://www.youtube.com/watch?v=xCx1eSdkyr0",
 }
 ```
 
 
-> POST /recommendations/:id/upvote - Lets you upvote a recommendation. It requires a recommendation`s id as a param, like in the example below:
+> POST /recommendations/:id/upvote - Lets you upvote a recommendation. It requires a recommendation's id as a param, like in the example below:
 
 ```
 	/recommendations/3/upvote
 ```
 
 
-> POST /recommendations/:id/downvote - Lets you downvote a recommendation. It requires a recommendation`s id as a param, like in the example below:
+> POST /recommendations/:id/downvote - Lets you downvote a recommendation. If the recommendation scores below -5, it is automatically deleted. This route requires a recommendation's id as a param, like in the example below:
 
 ```
 	/recommendations/3/downvote
 ```
 
 
-> GET /recommendations/random - It sends a single random recommendation in the following format:
+> GET /recommendations/random - It sends a single random recommendation, having 70% of chance of sending a recommendation with a score above 10 and 30% of sending one with a score of 10 or below. The recommendation received looks like the following:
 
 ```
 {
 	"id": 1,
-	"name": "Song name",
-	"youtubeLink": "https://www.youtube.com/watch?v=ePjtnSPFWK8&ab_channel=CHXVEVO",
+	"name": "The Moon Song",
+	"youtubeLink": "https://www.youtube.com/watch?v=xCx1eSdkyr0",
 	"score": 245
 },
 ```
